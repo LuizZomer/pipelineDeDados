@@ -90,7 +90,8 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   ReadUncommitted: 'ReadUncommitted',
   ReadCommitted: 'ReadCommitted',
   RepeatableRead: 'RepeatableRead',
-  Serializable: 'Serializable'
+  Serializable: 'Serializable',
+  Snapshot: 'Snapshot'
 });
 
 exports.Prisma.UserScalarFieldEnum = {
@@ -190,11 +191,6 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
-exports.Prisma.QueryMode = {
-  default: 'default',
-  insensitive: 'insensitive'
-};
-
 exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
@@ -228,7 +224,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\lipez\\OneDrive\\Documentos\\ProjetosPessoais\\pipelineDeDados\\prisma\\generated\\prisma",
+      "value": "C:\\Users\\lipez\\OneDrive\\Documentos\\ProjetosPessoais\\pipelineDeDados\\generateBdAndPopulate\\prisma\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -242,7 +238,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\lipez\\OneDrive\\Documentos\\ProjetosPessoais\\pipelineDeDados\\prisma\\schema.prisma",
+    "sourceFilePath": "C:\\Users\\lipez\\OneDrive\\Documentos\\ProjetosPessoais\\pipelineDeDados\\generateBdAndPopulate\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -255,8 +251,7 @@ const config = {
   "datasourceNames": [
     "db"
   ],
-  "activeProvider": "postgresql",
-  "postinstall": false,
+  "activeProvider": "sqlserver",
   "inlineDatasources": {
     "db": {
       "url": {
@@ -265,8 +260,8 @@ const config = {
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"./generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id           Int                   @id @default(autoincrement())\n  name         String\n  email        String                @unique\n  password     String\n  reviews      Review[]\n  purchases    Purchase[]\n  achievements UnlockedAchievement[]\n\n  @@map(\"users\")\n}\n\nmodel Game {\n  id          Int       @id @default(autoincrement())\n  name        String\n  description String?\n  releaseDate DateTime?\n  price       Float\n  developerId Int\n\n  reviews      Review[]\n  purchases    Purchase[]\n  achievements Achievement[]\n  dlcs         Dlc[]\n  genres       GameGender[]\n  platforms    GamePlatform[]\n  tags         GameTag[]\n  developer    Developer      @relation(fields: [developerId], references: [id])\n\n  @@map(\"games\")\n}\n\nmodel Developer {\n  id      Int     @id @default(autoincrement())\n  name    String\n  country String?\n  games   Game[]\n\n  @@map(\"developers\")\n}\n\nmodel Platform {\n  id    Int            @id @default(autoincrement())\n  name  String\n  games GamePlatform[]\n\n  @@map(\"platforms\")\n}\n\nmodel Gender {\n  id    Int          @id @default(autoincrement())\n  name  String\n  games GameGender[]\n\n  @@map(\"genders\")\n}\n\nmodel Tag {\n  id    Int       @id @default(autoincrement())\n  name  String\n  games GameTag[]\n\n  @@map(\"tags\")\n}\n\nmodel Review {\n  id      Int     @id @default(autoincrement())\n  rating  Int\n  comment String?\n  userId  Int\n  gameId  Int\n\n  user User @relation(fields: [userId], references: [id])\n  game Game @relation(fields: [gameId], references: [id])\n\n  @@map(\"reviews\")\n}\n\nmodel Purchase {\n  id           Int      @id @default(autoincrement())\n  purchaseDate DateTime @default(now())\n  paidPrice    Float\n  userId       Int\n  gameId       Int\n\n  user User @relation(fields: [userId], references: [id])\n  game Game @relation(fields: [gameId], references: [id])\n\n  @@map(\"purchases\")\n}\n\nmodel Achievement {\n  id          Int     @id @default(autoincrement())\n  name        String\n  description String?\n  points      Int\n  gameId      Int\n\n  unlockedAchievements UnlockedAchievement[]\n  game                 Game                  @relation(fields: [gameId], references: [id])\n\n  @@map(\"achievements\")\n}\n\nmodel UnlockedAchievement {\n  id            Int      @id @default(autoincrement())\n  unlockDate    DateTime @default(now())\n  userId        Int\n  achievementId Int\n\n  user        User        @relation(fields: [userId], references: [id])\n  achievement Achievement @relation(fields: [achievementId], references: [id])\n\n  @@unique([userId, achievementId])\n  @@map(\"achievement_unlocked\")\n}\n\nmodel Dlc {\n  id          Int       @id @default(autoincrement())\n  name        String\n  description String?\n  price       Float\n  releaseDate DateTime?\n  baseGameId  Int\n\n  baseGame Game @relation(fields: [baseGameId], references: [id])\n\n  @@map(\"dlcs\")\n}\n\nmodel GameGender {\n  gameId   Int\n  genderId Int\n\n  game  Game   @relation(fields: [gameId], references: [id])\n  genre Gender @relation(fields: [genderId], references: [id])\n\n  @@id([gameId, genderId])\n  @@map(\"game_genders\")\n}\n\nmodel GameTag {\n  gameId Int\n  tagId  Int\n\n  game Game @relation(fields: [gameId], references: [id])\n  tag  Tag  @relation(fields: [tagId], references: [id])\n\n  @@id([gameId, tagId])\n  @@map(\"game_tags\")\n}\n\nmodel GamePlatform {\n  gameId     Int\n  platformId Int\n\n  game     Game     @relation(fields: [gameId], references: [id])\n  platform Platform @relation(fields: [platformId], references: [id])\n\n  @@id([gameId, platformId])\n  @@map(\"game_platforms\")\n}\n",
-  "inlineSchemaHash": "daee9a2e45421b4169eb30c526d6a5692a503d8b68142480f120ab757e64d71e",
+  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"./generated/prisma\"\n}\n\ndatasource db {\n  provider          = \"sqlserver\"\n  url               = env(\"DATABASE_URL\")\n  shadowDatabaseUrl = env(\"SHADOW_DATABASE_URL\")\n}\n\nmodel User {\n  id           Int                   @id @default(autoincrement())\n  name         String\n  email        String                @unique\n  password     String\n  reviews      Review[]\n  purchases    Purchase[]\n  achievements UnlockedAchievement[]\n\n  @@map(\"users\")\n}\n\nmodel Game {\n  id          Int       @id @default(autoincrement())\n  name        String\n  description String?\n  releaseDate DateTime?\n  price       Float\n  developerId Int\n\n  reviews      Review[]\n  purchases    Purchase[]\n  achievements Achievement[]\n  dlcs         Dlc[]\n  genres       GameGender[]\n  platforms    GamePlatform[]\n  tags         GameTag[]\n  developer    Developer      @relation(fields: [developerId], references: [id])\n\n  @@map(\"games\")\n}\n\nmodel Developer {\n  id      Int     @id @default(autoincrement())\n  name    String\n  country String?\n  games   Game[]\n\n  @@map(\"developers\")\n}\n\nmodel Platform {\n  id    Int            @id @default(autoincrement())\n  name  String\n  games GamePlatform[]\n\n  @@map(\"platforms\")\n}\n\nmodel Gender {\n  id    Int          @id @default(autoincrement())\n  name  String\n  games GameGender[]\n\n  @@map(\"genders\")\n}\n\nmodel Tag {\n  id    Int       @id @default(autoincrement())\n  name  String\n  games GameTag[]\n\n  @@map(\"tags\")\n}\n\nmodel Review {\n  id      Int     @id @default(autoincrement())\n  rating  Int\n  comment String?\n  userId  Int\n  gameId  Int\n\n  user User @relation(fields: [userId], references: [id])\n  game Game @relation(fields: [gameId], references: [id])\n\n  @@map(\"reviews\")\n}\n\nmodel Purchase {\n  id           Int      @id @default(autoincrement())\n  purchaseDate DateTime @default(now())\n  paidPrice    Float\n  userId       Int\n  gameId       Int\n\n  user User @relation(fields: [userId], references: [id])\n  game Game @relation(fields: [gameId], references: [id])\n\n  @@map(\"purchases\")\n}\n\nmodel Achievement {\n  id          Int     @id @default(autoincrement())\n  name        String\n  description String?\n  points      Int\n  gameId      Int\n\n  unlockedAchievements UnlockedAchievement[]\n  game                 Game                  @relation(fields: [gameId], references: [id])\n\n  @@map(\"achievements\")\n}\n\nmodel UnlockedAchievement {\n  id            Int      @id @default(autoincrement())\n  unlockDate    DateTime @default(now())\n  userId        Int\n  achievementId Int\n\n  user        User        @relation(fields: [userId], references: [id])\n  achievement Achievement @relation(fields: [achievementId], references: [id])\n\n  @@unique([userId, achievementId])\n  @@map(\"achievement_unlocked\")\n}\n\nmodel Dlc {\n  id          Int       @id @default(autoincrement())\n  name        String\n  description String?\n  price       Float\n  releaseDate DateTime?\n  baseGameId  Int\n\n  baseGame Game @relation(fields: [baseGameId], references: [id])\n\n  @@map(\"dlcs\")\n}\n\nmodel GameGender {\n  gameId   Int\n  genderId Int\n\n  game  Game   @relation(fields: [gameId], references: [id])\n  genre Gender @relation(fields: [genderId], references: [id])\n\n  @@id([gameId, genderId])\n  @@map(\"game_genders\")\n}\n\nmodel GameTag {\n  gameId Int\n  tagId  Int\n\n  game Game @relation(fields: [gameId], references: [id])\n  tag  Tag  @relation(fields: [tagId], references: [id])\n\n  @@id([gameId, tagId])\n  @@map(\"game_tags\")\n}\n\nmodel GamePlatform {\n  gameId     Int\n  platformId Int\n\n  game     Game     @relation(fields: [gameId], references: [id])\n  platform Platform @relation(fields: [platformId], references: [id])\n\n  @@id([gameId, platformId])\n  @@map(\"game_platforms\")\n}\n",
+  "inlineSchemaHash": "3f93bbff54c289be22794d2cbc1801d2e0034c2d405e1e7961bcf89579a9a397",
   "copyEngine": true
 }
 
