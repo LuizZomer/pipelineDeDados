@@ -1,6 +1,6 @@
 site_name: Engenharia de Dados SATC
-site_description: Documentacao do projeto <nome do projeto>
-site_author: 
+site_description: Documentação do projeto Pipeline de Dados com PySpark, Delta Lake e Azure
+site_author: Prof. Nome do Responsável ou Grupo SATC
 site_url: 
 site_favicon: images/favicon.png
 site_logo: images/logo.png
@@ -8,13 +8,16 @@ site_keywords: Engenharia de Dados, Engenharia de Software, SATC, Python, Pyspar
 
 repo_name: projeto-ed-satc
 repo_url: 
-edit_uri: edit/master/docs/
+edit_uri: edit/main/docs/
 
 docs_dir: docs
 
 nav:
   - Home: index.md
   - Sobre: sobre.md
+  - Arquitetura da Solução: arquitetura.md
+  - Camadas: camadas.md
+  - Exemplos de Código: exemplos.md
 
 theme:
   name: material
@@ -27,13 +30,8 @@ theme:
     - navigation.tabs
     - navigation.tabs.sticky
     - navigation.path
-    #- navigation.paging
-    #- navigation.expand
     - navigation.top
-    #- navigation.sidebar
     - navigation.next-prev
-    #- navigation.toc
-    #- navigation.scrollspy
     - search
   icon:
     repo: fontawesome/brands/github
@@ -45,11 +43,14 @@ hide:
 
 extra:
   social:
-    - icon: fontawesome/brands/mastodon 
-      link: https://jl2tech.com
+    - icon: fontawesome/brands/github
+      link: https://github.com/seu-usuario
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/in/seu-perfil
   generator: false
 
-copyright: 
+copyright: >
+  © 2025 Projeto de Engenharia de Dados - SATC. Todos os direitos reservados.
 
 extra_css:
   - stylesheets/extra.css
