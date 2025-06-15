@@ -49,7 +49,7 @@ extra:
       link: https://jl2tech.com
   generator: false
 
-copyright: Copyright &copy; 2024 - <a href="#" target="_blank"><b>Jorge Luiz da Silva</b></a> - Todos os direitos reservados.
+copyright: 
 
 extra_css:
   - stylesheets/extra.css
