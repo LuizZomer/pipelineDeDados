@@ -1,20 +1,20 @@
-variable "resource_group_name" {
-  description = "O nome do Resource Group onde o Databricks Workspace será criado"
-  type        = string
+variable "rg_pipeline" {
+  description = "Informações do Resource Group e do Databricks"
+  type = object({
+    resource_group_name = string
+    location            = string
+    workspace_name      = string
+  })
+
+  default = {
+    resource_group_name = "rg-pipeline"
+    location            = "brazilsouth"
+    workspace_name      = "databricks-trial"
+  }
 }
 
-variable "location" {
-  description = "A localização onde o Databricks Workspace será criado"
+variable "subscription_id" {
+  description = "Subscription ID da conta Azure"
   type        = string
-}
-
-variable "workspace_name" {
-  description = "O nome do Databricks Workspace"
-  type        = string
-}
-
-variable "sku" {
-  description = "O tipo de SKU do Databricks Workspace (Standard, Premium ou Trial)"
-  type        = string
-  default     = "trial"
+  default     = "3c1e68ef-0025-4093-9845-37fcfc85a8d6" # Pode ajustar aqui ou usar terraform.tfvars
 }
