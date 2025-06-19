@@ -14,4 +14,4 @@ DATABASE_URL="postgresql://admin:admin@localhost:5432/gamesLib?schema=public"
 Após isso rodar os comandos abaixo:
 
 - ```npx prisma migrate dev``` para criar a migração no banco
-- ```npm run seed``` popula o banco 
+- ```npm run seed``` popula o banco
