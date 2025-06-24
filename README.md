@@ -74,22 +74,7 @@ Transformar os dados da Bronze para Silver com limpeza e padronização.
 - Remoção de campos nulos importantes.
 - Inclusão de metadados Silver.
 
----
-
-#### Limpeza do container Silver (antes de sobrescrever):
-
-```python
-dbutils.fs.rm("/mnt/<storage_account>/silver", True)
-```
-
----
-
-#### Criação de Tabelas Silver gerenciadas:
-
-```python
-df_silver.write.format("delta").mode("overwrite").saveAsTable("pipeline_silver.<nome_tabela>")
-```
-
+- 
 ---
 
 ### 📍 Camada Silver
