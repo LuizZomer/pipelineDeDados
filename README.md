@@ -74,7 +74,6 @@ Transformar os dados da Bronze para Silver com limpeza e padronização.
 - Remoção de campos nulos importantes.
 - Inclusão de metadados Silver.
 
-- 
 ---
 
 ### 📍 Camada Silver
