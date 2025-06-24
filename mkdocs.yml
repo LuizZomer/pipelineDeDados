@@ -1,14 +1,10 @@
 site_name: Engenharia de Dados SATC
 site_description: Documentação do projeto Pipeline de Dados com PySpark, Delta Lake e Azure
 site_author: Prof. Nome do Responsável ou Grupo SATC
-site_url: 
-site_favicon: images/favicon.png
-site_logo: images/logo.png
-site_keywords: Engenharia de Dados, Engenharia de Software, SATC, Python, Pyspark, Delta, Jupyter, Git, GitHub, Markdown, MkDocs, Material Theme
 
 repo_name: projeto-ed-satc
-repo_url: 
-edit_uri: edit/main/docs/
+repo_url: https://github.com/LuizZomer/pipelineDeDados.git
+edit_uri: ""
 
 docs_dir: docs
 
@@ -17,7 +13,10 @@ nav:
   - Sobre: sobre.md
   - Arquitetura da Solução: arquitetura.md
   - Camadas: camadas.md
-  - Exemplos de Código: exemplos.md
+  - Notebooks:
+      - Landing para Bronze: landing_to_bronze.md
+      - Bronze para Silver: bronze_to_silver.md
+      - Silver para Gold: silver_to_gold.md
 
 theme:
   name: material
@@ -35,11 +34,6 @@ theme:
     - search
   icon:
     repo: fontawesome/brands/github
-
-hide:
-  - search
-  - navigation
-  - toc
 
 extra:
   social:
