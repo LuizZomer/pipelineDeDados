@@ -117,14 +117,16 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   ReadUncommitted: 'ReadUncommitted',
   ReadCommitted: 'ReadCommitted',
   RepeatableRead: 'RepeatableRead',
-  Serializable: 'Serializable'
+  Serializable: 'Serializable',
+  Snapshot: 'Snapshot'
 });
 
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   name: 'name',
   email: 'email',
-  password: 'password'
+  password: 'password',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.GameScalarFieldEnum = {
@@ -139,28 +141,33 @@ exports.Prisma.GameScalarFieldEnum = {
 exports.Prisma.DeveloperScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  country: 'country'
+  country: 'country',
+  foundedAt: 'foundedAt'
 };
 
 exports.Prisma.PlatformScalarFieldEnum = {
   id: 'id',
-  name: 'name'
+  name: 'name',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.GenderScalarFieldEnum = {
   id: 'id',
-  name: 'name'
+  name: 'name',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.TagScalarFieldEnum = {
   id: 'id',
-  name: 'name'
+  name: 'name',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.ReviewScalarFieldEnum = {
   id: 'id',
   rating: 'rating',
   comment: 'comment',
+  createdAt: 'createdAt',
   userId: 'userId',
   gameId: 'gameId'
 };
@@ -178,6 +185,7 @@ exports.Prisma.AchievementScalarFieldEnum = {
   name: 'name',
   description: 'description',
   points: 'points',
+  createdAt: 'createdAt',
   gameId: 'gameId'
 };
 
@@ -215,11 +223,6 @@ exports.Prisma.GamePlatformScalarFieldEnum = {
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
-};
-
-exports.Prisma.QueryMode = {
-  default: 'default',
-  insensitive: 'insensitive'
 };
 
 exports.Prisma.NullsOrder = {

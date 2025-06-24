@@ -18,14 +18,23 @@ import { platform } from "./platform.js";
 async function main() {
   await cleaningDatabase();
 
+  // const genderCount = 20;
+  // const platformCount = 15;
+  // const tagCount = 50;
+  // const developerCount = 5000;
+  // const userCount = 80000;
+  // const gameCount = 100000;
+  // const reviewCount = 80000;
+  // const purchaseCount = 30000;
+
   const genderCount = 20;
   const platformCount = 15;
-  const tagCount = 50;
-  const developerCount = 5000;
-  const userCount = 80000;
-  const gameCount = 100000;
-  const reviewCount = 80000;
-  const purchaseCount = 30000;
+  const tagCount = 5;
+  const developerCount = 50;
+  const userCount = 50;
+  const gameCount = 100;
+  const reviewCount = 100;
+  const purchaseCount = 100;
 
   await gender(genderCount);
 
@@ -37,23 +46,31 @@ async function main() {
 
   await user(userCount);
 
-  await game(gameCount, developerCount);
+  const userIds = (await prisma.user.findMany({ select: { id: true } })).map(
+    (u) => u.id
+  );
 
-  await review(reviewCount, userCount, gameCount);
+  await game(gameCount);
 
-  await achievement(gameCount);
+  const gameIds = (await prisma.game.findMany({ select: { id: true } })).map(
+    (g) => g.id
+  );
 
-  await unlockedAchievement(userCount);
+  await review(reviewCount, gameIds);
 
-  await purchases(purchaseCount, userCount, gameCount);
+  await achievement(gameIds);
 
-  await dlc(gameCount);
+  await unlockedAchievement(userIds);
 
-  await generateGameGender(genderCount, gameCount);
+  await purchases(purchaseCount, gameIds);
 
-  await generateGamePlatform(platformCount, gameCount);
+  await dlc(gameIds);
 
-  await generateGameTag(tagCount, gameCount);
+  await generateGameGender(gameIds);
+
+  await generateGamePlatform(gameIds);
+
+  await generateGameTag(gameIds);
 
   console.log("Seed finished successfully.");
 }
