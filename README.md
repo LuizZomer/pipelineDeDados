@@ -169,4 +169,4 @@ Este projeto está sob a licença MIT.
 - [Documentação Azure Databricks](https://learn.microsoft.com/en-us/azure/databricks/)
 - [Delta Lake](https://delta.io/)
 - Exemplo de repositório SATC:  
-  [https://github.com/jlsilva01/projeto-ed-satc](https://github.com/jlsilva01/projeto-ed-satc)
+  [https://github.com/jlsilva01/adls-azure](https://github.com/jlsilva01/adls-azure)
