@@ -87,6 +87,8 @@ Armazena dados brutos vindos do SQL Server. Os arquivos são colocados na **land
 
 Aplica limpeza e transformação dos dados. Corrige tipos, remove nulos e formata campos.
 
+---
+
 ### Camada Gold
 
 Cria tabelas analíticas prontas para consumo. Realiza junções, agregações e cálculos de KPIs.
