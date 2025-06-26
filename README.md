@@ -1,17 +1,265 @@
-# pipelineDeDados
+# Pipeline de Dados - Projeto ED SATC
 
-## Rodar a criaÃ§Ã£o das tabelas
+[![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![CI/CD](https://github.com/username/pipeline-de-dados/workflows/CI/badge.svg)](https://github.com/username/pipeline-de-dados/actions)
 
-Executar todos os comandos na raiz do projeto
-- ```docker compose up``` para subir um banco postgree
-- ```npm i``` instala as dependencias do projeto
+Uma pipeline completa de dados usando **Azure Databricks**, **Data Lake Storage** e **Delta Lake** para processamento de dados de jogos.
 
-IrÃ¡ precisar criar um arquivo na raiz do projeto chamado ```.env``` com a seguinte variavel:
+## ?? Descrição
+
+Este projeto implementa uma **arquitetura de Data Lakehouse** com três camadas principais:
+
+- **Landing Zone** - Recebe dados brutos (CSV, JSON)
+- **Bronze** - Dados com metadados básicos
+- **Silver** - Dados limpos e normalizados
+- **Gold** - Dados prontos para BI e análises (One Big Table)
+
+## ?? Disclaimer
+
+Este projeto é para fins educacionais e de demonstração. As credenciais e configurações do Azure devem ser ajustadas para seu ambiente específico.
+
+## ?? Pré-requisitos
+
+- **Python 3.9+**
+- **Azure Databricks Workspace**
+- **Azure Data Lake Storage Gen2**
+- **PostgreSQL** (para desenvolvimento local)
+- **Docker** (opcional)
+
+### Dependências Principais
+
+- PySpark 3.5.0+
+- Delta Spark 3.0.0+
+- Azure Storage Blob
+- Azure Identity
+
+## ?? Instalação
+
+### 1. Clone o repositório
+
+```bash
+git clone https://github.com/username/pipeline-de-dados.git
+cd pipeline-de-dados
 ```
-DATABASE_URL="postgresql://admin:admin@localhost:5432/gamesLib?schema=public"
+
+### 2. Crie um ambiente virtual
+
+```bash
+python -m venv .venv
+source .venv/bin/activate  # Linux/Mac
+# ou
+.venv\Scripts\activate     # Windows
 ```
 
-ApÃ³s isso rodar os comandos abaixo:
+### 3. Instale as dependências
 
-- ```npx prisma migrate dev``` para criar a migraÃ§Ã£o no banco
-- ```npm run seed``` popula o banco 
+```bash
+pip install -r requirements.txt
+# ou para desenvolvimento
+pip install -e ".[dev]"
+```
+
+### 4. Configure as variáveis de ambiente
+
+Crie um arquivo `.env` na raiz do projeto:
+
+```env
+AZURE_STORAGE_ACCOUNT=datalake7eadf73a479de9f7
+AZURE_SAS_TOKEN=your_sas_token_here
+DATABRICKS_HOST=https://your-workspace.azuredatabricks.net
+DATABRICKS_TOKEN=your_databricks_token
+```
+
+## ??? Como Usar
+
+### Execução Completa da Pipeline
+
+```bash
+# Executar toda a pipeline
+python -m pipeline_de_dados.main --stage all --verbose
+
+# Ou usando o módulo diretamente
+python src/pipeline_de_dados/main.py --stage all
+```
+
+### Execução por Estágio
+
+```bash
+# Apenas Landing ? Bronze
+python -m pipeline_de_dados.main --stage landing
+
+# Apenas Bronze ? Silver
+python -m pipeline_de_dados.main --stage bronze
+
+# Apenas Silver ? Gold
+python -m pipeline_de_dados.main --stage silver
+
+# Apenas criação da One Big Table
+python -m pipeline_de_dados.main --stage gold
+```
+
+### Execução no Databricks
+
+```python
+# No notebook do Databricks
+%run "./src/pipeline_de_dados/landing_to_bronze"
+%run "./src/pipeline_de_dados/bronze_to_silver"
+%run "./src/pipeline_de_dados/silver_to_gold"
+```
+
+## ?? Testes
+
+### Executar todos os testes
+
+```bash
+pytest tests/ -v
+```
+
+### Executar testes com cobertura
+
+```bash
+pytest tests/ -v --cov=src/pipeline_de_dados --cov-report=html
+```
+
+### Executar linting
+
+```bash
+flake8 src/ tests/
+black --check src/ tests/
+mypy src/
+```
+
+## ?? Documentação
+
+A documentação completa está disponível em:
+
+- **?? [Documentação Online](https://username.github.io/pipeline-de-dados)**
+- **?? [docs/](docs/)** - Documentação local
+
+### Estrutura da Documentação
+
+- `docs/arquitetura.md` - Arquitetura geral do sistema
+- `docs/camadas.md` - Detalhes das camadas de dados
+- `docs/index.md` - Página inicial da documentação
+
+## ?? Estrutura do Projeto
+
+```
+pipeline-de-dados/
+??? README.md                 # Este arquivo
+??? LICENSE                   # Licença MIT
+??? .python-version          # Versão do Python (pyenv)
+??? .gitignore              # Arquivos ignorados pelo Git
+??? pyproject.toml          # Configuração do projeto
+??? requirements.txt        # Dependências
+??? docker-compose.yml      # Configuração Docker
+??? mkdocs.yml             # Configuração da documentação
+?
+??? src/                   # Código fonte
+?   ??? pipeline_de_dados/
+?       ??? __init__.py
+?       ??? main.py        # Ponto de entrada
+?       ??? pipeline_completa/
+?           ??? landing_to_bronze.ipynb
+?           ??? bronze_to_silver.ipynb
+?           ??? silver_to_gold.ipynb
+?
+??? tests/                 # Testes
+?   ??? __init__.py
+?   ??? test_pipeline.py
+?
+??? docs/                  # Documentação
+?   ??? index.md
+?   ??? arquitetura.md
+?   ??? camadas.md
+?
+??? examples/              # Exemplos de uso
+?   ??? basic_usage.py
+?
+??? scripts/               # Scripts auxiliares
+?   ??? generateDbAndPopulate/
+?
+??? data/                  # Dados
+?   ??? raw/              # Dados brutos
+?   ??? processed/        # Dados processados
+?
+??? logs/                  # Logs da aplicação
+??? assets/               # Imagens, diagramas
+??? iac/                  # Infraestrutura como código
+?   ??? main.tf
+?   ??? variables.tf
+?   ??? (recursos Azure)
+?
+??? .github/              # GitHub Actions
+    ??? workflows/
+        ??? ci.yml
+```
+
+## ?? Configuração
+
+### Azure Databricks
+
+1. Configure o workspace do Databricks
+2. Monte os containers do Data Lake Storage
+3. Configure as permissões necessárias
+
+### Data Lake Storage
+
+1. Crie os containers: `landing`, `bronze`, `silver`, `gold`
+2. Configure as políticas de acesso
+3. Gere o SAS Token com permissões adequadas
+
+## ?? Deploy
+
+### Local
+
+```bash
+# Instalar em modo desenvolvimento
+pip install -e .
+
+# Executar pipeline
+python -m pipeline_de_dados.main
+```
+
+### Databricks
+
+1. Faça upload dos notebooks para o workspace
+2. Configure os clusters
+3. Execute os notebooks na ordem correta
+
+### CI/CD
+
+O projeto inclui GitHub Actions para:
+- ? Testes automatizados
+- ? Linting e formatação
+- ? Build do pacote
+- ? Deploy da documentação
+
+## ?? Contribuição
+
+1. Fork o projeto
+2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
+3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
+4. Push para a branch (`git push origin feature/AmazingFeature`)
+5. Abra um Pull Request
+
+## ?? Licença
+
+Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICENSE) para detalhes.
+
+## ????? Autor
+
+**Thiago Almeida**
+- Email: thiago.almeida@example.com
+- GitHub: [@username](https://github.com/username)
+
+## ?? Agradecimentos
+
+- **SATC** - Instituição de ensino
+- **Azure** - Plataforma cloud
+- **Databricks** - Plataforma de dados
+
+---
+
+? Se este projeto foi útil, considere dar uma estrela!
