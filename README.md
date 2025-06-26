@@ -5,15 +5,19 @@ Este repositório contém um pipeline de engenharia de dados desenvolvido como a
 ## Sumário
 
 - [Visão Geral do Projeto](#visão-geral-do-projeto)
-- [Tecnologias Utilizadas](#tecnologias-utilizadas)
+- [🧰 Tecnologias Utilizadas](#-tecnologias-utilizadas)
 - [Arquitetura do Pipeline](#arquitetura-do-pipeline)
 - [Configuração do Ambiente](#configuração-do-ambiente)
-- [Execução dos Scripts](#execução-dos-scripts)
 - [Detalhamento das Camadas](#detalhamento-das-camadas)
+  - [Camada Bronze](#camada-bronze)
+  - [Camada Silver](#camada-silver)
+  - [Camada Gold](#camada-gold)
 - [Notebook Bronze](#notebook-bronze)
 - [Notebook Silver](#notebook-silver)
 - [Notebook Gold](#notebook-gold)
-- [Referências](#referências)
+- [👥 Autores](#-autores)
+- [📄 Licença](#-licença)
+- [📚 Referências](#-referências)
 
 ---
 
@@ -23,16 +27,17 @@ O pipeline é responsável por realizar a ingestão, tratamento, enriquecimento 
 
 ---
 
-## Tecnologias Utilizadas
+## 🧰 Tecnologias Utilizadas
 
-- Azure Data Lake Storage Gen2
-- Azure Databricks
-- Apache Spark (PySpark)
-- Terraform + Azure CLI
-- SQL Server (Docker)
-- MongoDB (Bônus)
-- Python
-- Delta Lake
+- [Azure Data Lake Storage Gen2](https://learn.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction)
+- [Azure Databricks](https://azure.microsoft.com/en-us/products/databricks/)
+- [Apache Spark (PySpark)](https://spark.apache.org/docs/latest/api/python/)
+- [Delta Lake](https://delta.io/)
+- [Terraform](https://www.terraform.io/)
+- [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/)
+- [Docker](https://www.docker.com/)
+- [SQL Server (Docker)](https://hub.docker.com/_/microsoft-mssql-server)
+- [Python](https://www.python.org/)
 
 ---
 
@@ -60,46 +65,7 @@ O pipeline é responsável por realizar a ingestão, tratamento, enriquecimento 
 - Docker instalado
 - Conta no Azure
 
-### Subir o SQL Server com Docker
-
-```bash
-docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=SqlServer123!" -p 1433:1433 --name sql_server_container -d mcr.microsoft.com/mssql/server
-```
-
-### Subir o MongoDB com Docker (bônus)
-
-```bash
-docker run -d -p 27017:27017 --name mongodb mongo
-```
-
-### Provisionar ADLS com Terraform
-
-```bash
-cd terraform
-az login
-terraform init
-terraform apply
-```
-
 ---
-
-## Execução dos Scripts
-
-### Exportar dados do SQL Server para CSV
-
-Execute o script `sql_to_csv.py` para extrair dados do banco e salvar em arquivos CSV.
-
-```bash
-python sql_to_csv.py
-```
-
-### Enviar arquivos CSV para o ADLS (landing zone)
-
-Configure as credenciais no `upload_to_adls.py` e execute:
-
-```bash
-python upload_to_adls.py
-```
 
 ### Executar notebooks no Databricks
 
@@ -115,9 +81,7 @@ python upload_to_adls.py
 
 Armazena dados brutos vindos do SQL Server. Os arquivos são colocados na **landing zone** do ADLS. Nenhuma transformação é aplicada nesta etapa.
 
-```text
-abfss://landing@nomestorage.dfs.core.windows.net/
-```
+---
 
 ### Camada Silver
 
