@@ -1,141 +1,183 @@
+# Pipeline de Dados com Azure Data Lake e Databricks
 
-# Projeto Pipeline de Dados - Engenharia de Dados SATC
+Este repositório contém um pipeline de engenharia de dados desenvolvido como atividade prática da disciplina de **Engenharia de Dados** da **Faculdade SATC**.
 
-Repositório desenvolvido como projeto prático da disciplina de **Engenharia de Dados** da **Faculdade SATC**.
+## Sumário
+
+- [Visão Geral do Projeto](#visão-geral-do-projeto)
+- [Tecnologias Utilizadas](#tecnologias-utilizadas)
+- [Arquitetura do Pipeline](#arquitetura-do-pipeline)
+- [Configuração do Ambiente](#configuração-do-ambiente)
+- [Execução dos Scripts](#execução-dos-scripts)
+- [Detalhamento das Camadas](#detalhamento-das-camadas)
+- [Notebook Bronze](#notebook-bronze)
+- [Notebook Silver](#notebook-silver)
+- [Notebook Gold](#notebook-gold)
+- [Referências](#referências)
 
 ---
 
-## 📌 Desenho de Arquitetura
+## Visão Geral do Projeto
 
-O pipeline de dados segue o modelo de **camadas em Data Lakehouse** usando:
+O pipeline é responsável por realizar a ingestão, tratamento, enriquecimento e disponibilização de dados usando uma arquitetura em camadas: **Bronze**, **Silver** e **Gold**. Os dados são armazenados em um **Azure Data Lake Storage Gen2** e processados com **Apache Spark** em **Azure Databricks**.
 
-- **Azure Data Lake Storage Gen2 (ADLS)**
-- **Delta Lake**
-- **Apache Spark no Databricks**
+---
 
-### Estrutura Geral:
+## Tecnologias Utilizadas
 
+- Azure Data Lake Storage Gen2
+- Azure Databricks
+- Apache Spark (PySpark)
+- Terraform + Azure CLI
+- SQL Server (Docker)
+- MongoDB (Bônus)
+- Python
+- Delta Lake
+
+---
+
+## Arquitetura do Pipeline
+
+```text
++-------------+      +-------------+      +-------------+
+|   Ingestão  | ---> |  Tratamento | ---> |  Analytics  |
+|   (Bronze)  |      |  (Silver)   |      |  (Gold)     |
++-------------+      +-------------+      +-------------+
 ```
-[Landing Zone] → [Bronze] → [Silver] → [Gold]
-```
+
+- **Camada Bronze**: Dados brutos do SQL Server exportados como CSV.
+- **Camada Silver**: Dados limpos e tratados.
+- **Camada Gold**: Dados prontos para consumo analítico.
 
 ---
 
-## 🚀 Ferramentas Utilizadas
+## Configuração do Ambiente
 
-- **Linguagem:** Python 3.11+
-- **Processamento Distribuído:** PySpark (Databricks)
-- **Armazenamento:** Azure Data Lake Storage Gen2
-- **Formato de Dados:** Delta Lake
-- **Documentação:** MkDocs
+### Requisitos
 
----
+- Azure CLI configurado
+- Terraform instalado
+- Docker instalado
+- Conta no Azure
 
-## 📚 Detalhamento das Camadas e Notebooks
-
-### 📍 Camada Landing Zone
-
-- **Função:** Área de recepção dos dados brutos, sem qualquer tratamento.
-- **Formato:** CSV.
-- **Local:** Container `landing` no ADLS.
-
----
-
-### 📍 Landing to Bronze - Notebook 1
-
-**Objetivo:**  
-Ingerir os dados da Landing Zone para a Bronze aplicando metadados iniciais.
-
-**Passos:**
-
-- Leitura de arquivos CSV.
-- Adição de colunas:  
-  - Nome do arquivo origem  
-  - Data/hora de ingestão
-- Escrita no formato Delta no container **bronze**.
-
----
-
-### 📍 Camada Bronze
-
-- **Função:** Persistência dos dados raw em formato Delta.
-- **Local:** Container `bronze` no ADLS.
-
----
-
-### 📍 Bronze to Silver - Notebook 2
-
-**Objetivo:**  
-Transformar os dados da Bronze para Silver com limpeza e padronização.
-
-**Passos:**
-
-- Padronização de nomes de colunas (ex: `CD_` vira `CODIGO_`, `DT_` vira `DATA_`).
-- Remoção de campos nulos importantes.
-- Inclusão de metadados Silver.
-
----
-
-### 📍 Camada Silver
-
-- **Função:** Dados limpos e tratados.
-- **Formato:** Delta.
-- **Local:** Container `silver` no ADLS e banco `pipeline_silver` no Databricks.
-
----
-
-### 📍 Silver to Gold - Notebook 3
-
-**Objetivo:**  
-Criar as tabelas analíticas finais na camada Gold, com agregações e cálculos de KPIs.
-
-**Passos:**
-
-- Leitura de tabelas Silver.
-- Realização de agregações (ex: soma de vendas por produto).
-- Escrita da Gold.
-
----
-
-### 📍 Camada Gold
-
-- **Função:** Dados prontos para BI e relatórios.
-- **Formato:** Delta.
-- **Local:** Container `gold` no ADLS.
-
----
-
-## ✅ Instalação da Documentação MkDocs
-
-### 1. Criar ambiente virtual e instalar dependências:
+### Subir o SQL Server com Docker
 
 ```bash
-python -m venv .venv
-source .venv/Scripts/activate  # (Windows)
-# ou
-source .venv/bin/activate      # (Linux/Mac)
+docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=SqlServer123!" -p 1433:1433 --name sql_server_container -d mcr.microsoft.com/mssql/server
+```
 
-pip install mkdocs mkdocs-material mkdocstrings[python] pymdown-extensions
+### Subir o MongoDB com Docker (bônus)
+
+```bash
+docker run -d -p 27017:27017 --name mongodb mongo
+```
+
+### Provisionar ADLS com Terraform
+
+```bash
+cd terraform
+az login
+terraform init
+terraform apply
 ```
 
 ---
 
-### 2. Rodar localmente:
+## Execução dos Scripts
+
+### Exportar dados do SQL Server para CSV
+
+Execute o script `sql_to_csv.py` para extrair dados do banco e salvar em arquivos CSV.
 
 ```bash
-mkdocs serve
+python sql_to_csv.py
 ```
 
-Acesse:  
-👉 http://127.0.0.1:8000
+### Enviar arquivos CSV para o ADLS (landing zone)
+
+Configure as credenciais no `upload_to_adls.py` e execute:
+
+```bash
+python upload_to_adls.py
+```
+
+### Executar notebooks no Databricks
+
+1. **Bronze**: Leitura da landing zone e criação da camada Bronze.
+2. **Silver**: Limpeza e transformação dos dados da Bronze.
+3. **Gold**: Cálculo de KPIs e salvamento dos dados analíticos finais.
 
 ---
 
-### 3. Publicar no GitHub Pages:
+## Detalhamento das Camadas
 
-```bash
-mkdocs gh-deploy
+### Camada Bronze
+
+Armazena dados brutos vindos do SQL Server. Os arquivos são colocados na **landing zone** do ADLS. Nenhuma transformação é aplicada nesta etapa.
+
+```text
+abfss://landing@nomestorage.dfs.core.windows.net/
 ```
+
+### Camada Silver
+
+Aplica limpeza e transformação dos dados. Corrige tipos, remove nulos e formata campos.
+
+### Camada Gold
+
+Cria tabelas analíticas prontas para consumo. Realiza junções, agregações e cálculos de KPIs.
+
+---
+
+## Notebook Bronze
+
+### Objetivo:
+Criar a camada **Bronze** a partir de arquivos brutos (CSV) da landing zone no ADLS.
+
+### Etapas principais:
+
+- Leitura dos arquivos CSV do ADLS.
+- Criação de tabelas Delta.
+- Armazenamento na camada Bronze.
+
+### Resultado esperado:
+
+- Tabelas Delta com dados brutos.
+
+---
+
+## Notebook Silver
+
+### Objetivo:
+Limpar e transformar os dados da camada Bronze.
+
+### Etapas principais:
+
+- Remoção de valores nulos.
+- Conversão de tipos de dados.
+- Enriquecimento e padronização.
+
+### Resultado esperado:
+
+- Tabelas limpas e estruturadas.
+
+---
+
+## Notebook Gold
+
+### Objetivo:
+Transformar os dados da camada **Silver** em datasets finais na **camada Gold**, prontos para relatórios e análises.
+
+### Etapas principais:
+
+- Cálculo de KPIs.
+- Agregações e análises.
+- Junções de tabelas.
+- Armazenamento em Delta.
+
+### Resultado esperado:
+
+- Tabelas analíticas finais para BI.
 
 ---
 
