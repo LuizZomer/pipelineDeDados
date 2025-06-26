@@ -1,0 +1,33 @@
+# Core dependencies
+pyspark==3.5.0
+delta-spark==3.0.0
+pandas==2.1.4
+numpy==1.24.3
+
+# Azure dependencies
+azure-storage-blob==12.19.0
+azure-identity==1.15.0
+azure-databricks-sdk==0.1.0
+
+# Database
+psycopg2-binary==2.9.9
+sqlalchemy==2.0.23
+
+# Data processing
+pyarrow==14.0.2
+fastparquet==2023.10.1
+
+# Utilities
+python-dotenv==1.0.0
+click==8.1.7
+rich==13.7.0
+
+# Development dependencies
+pytest==7.4.3
+black==23.11.0
+flake8==6.1.0
+mypy==1.7.1
+
+# Documentation
+mkdocs==1.5.3
+mkdocs-material==9.4.8 
