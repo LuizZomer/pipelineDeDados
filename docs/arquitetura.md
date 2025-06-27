@@ -1,20 +1,11 @@
 # Arquitetura da Solução
 
-A arquitetura é dividida em três camadas:
+A arquitetura segue o modelo de **Data Lake em Camadas**.
 
-## 1. Landing Zone
-- Recebe dados brutos (ex: JSON, CSV)
-- Sem tratamento ou validação
-- Armazenados no Azure Data Lake Storage (ADLS)
+## 🏗️ Componentes:
 
-## 2. Silver
-- Dados limpos e normalizados
-- Tabelas Delta Lake
-- Aplicação de regras de qualidade e schema enforcement
-
-## 3. Gold
-- Dados prontos para consumo por BI
-- Métricas agregadas, joins, indicadores
-- Integração com Power BI, Synapse ou Data Studio
-
-![Arquitetura](https://raw.githubusercontent.com/databricks/tech-talks/master/images/lakehouse-architecture.png)
+- **Azure Data Lake (ADLS Gen2):** Armazena os dados
+- **Databricks:** Processamento com PySpark
+- **Delta Lake:** Armazenamento transacional de dados
+- **Notebooks:** Para cada etapa do pipeline
+- **MkDocs:** Para documentação

@@ -1,3 +1,189 @@
+# Pipeline de Dados com Azure Data Lake e Databricks
+
+Este reposit√≥rio cont√©m um pipeline de engenharia de dados desenvolvido como atividade pr√°tica da disciplina de **Engenharia de Dados** da **Faculdade SATC**.
+
+## Sum√°rio
+
+- [Vis√£o Geral do Projeto](#vis√£o-geral-do-projeto)
+- [üåç Tecnologias Utilizadas](#-tecnologias-utilizadas)
+- [Arquitetura do Pipeline](#arquitetura-do-pipeline)
+- [Configura√ß√£o do Ambiente](#configura√ß√£o-do-ambiente)
+- [Detalhamento das Camadas](#detalhamento-das-camadas)
+  - [Camada Bronze](#camada-bronze)
+  - [Camada Silver](#camada-silver)
+  - [Camada Gold](#camada-gold)
+- [Notebook Bronze](#notebook-bronze)
+- [Notebook Silver](#notebook-silver)
+- [Notebook Gold](#notebook-gold)
+- [üë®‚Äçüíª Autores](#-autores)
+- [üìÑ Licen√ßa](#-licen√ßa)
+- [üîó Refer√™ncias](#-refer√™ncias)
+
+---
+
+## Vis√£o Geral do Projeto
+
+O pipeline √© respons√°vel por realizar a ingest√£o, tratamento, enriquecimento e disponibiliza√ß√£o de dados usando uma arquitetura em camadas: **Bronze**, **Silver** e **Gold**. Os dados s√£o armazenados em um **Azure Data Lake Storage Gen2** e processados com **Apache Spark** em **Azure Databricks**.
+
+---
+
+## üåç Tecnologias Utilizadas
+
+- [Azure Data Lake Storage Gen2](https://learn.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction)
+- [Azure Databricks](https://azure.microsoft.com/en-us/products/databricks/)
+- [Apache Spark (PySpark)](https://spark.apache.org/docs/latest/api/python/)
+- [Delta Lake](https://delta.io/)
+- [Terraform](https://www.terraform.io/)
+- [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/)
+- [Docker](https://www.docker.com/)
+- [SQL Server (Docker)](https://hub.docker.com/_/microsoft-mssql-server)
+- [Python](https://www.python.org/)
+
+---
+
+## Arquitetura do Pipeline
+
+```text
++-------------+      +-------------+      +-------------+
+|   Ingest√£o  | ---> |  Tratamento | ---> |  Analytics  |
+|   (Bronze)  |      |  (Silver)   |      |  (Gold)     |
++-------------+      +-------------+      +-------------+
+
+- **Camada Bronze**: Dados brutos do SQL Server exportados como CSV.
+- **Camada Silver**: Dados limpos e tratados.
+- **Camada Gold**: Dados prontos para consumo anal√≠tico.
+
+---
+
+## Configura√ß√£o do Ambiente
+
+### Requisitos
+
+- Azure CLI configurado
+- Terraform instalado
+- Docker instalado
+- Conta no Azure
+
+---
+
+### Executar notebooks no Databricks
+
+1. **Bronze**: Leitura da landing zone e cria√ß√£o da camada Bronze.
+2. **Silver**: Limpeza e transforma√ß√£o dos dados da Bronze.
+3. **Gold**: C√°lculo de KPIs e salvamento dos dados anal√≠ticos finais.
+
+---
+
+## Detalhamento das Camadas
+
+### Camada Bronze
+
+Armazena dados brutos vindos do SQL Server. Os arquivos s√£o colocados na **landing zone** do ADLS. Nenhuma transforma√ß√£o √© aplicada nesta etapa.
+
+---
+
+### Camada Silver
+
+Aplica limpeza e transforma√ß√£o dos dados. Corrige tipos, remove nulos e formata campos.
+
+---
+
+### Camada Gold
+
+Cria tabelas anal√≠ticas prontas para consumo. Realiza jun√ß√µes, agrega√ß√µes e c√°lculos de KPIs.
+
+---
+
+## Notebook Bronze
+
+### Objetivo:
+Criar a camada **Bronze** a partir de arquivos brutos (CSV) da landing zone no ADLS.
+
+### Etapas principais:
+
+- Leitura dos arquivos CSV do ADLS.
+- Cria√ß√£o de tabelas Delta.
+- Armazenamento na camada Bronze.
+
+### Resultado esperado:
+
+- Tabelas Delta com dados brutos.
+
+---
+
+## Notebook Silver
+
+### Objetivo:
+Limpar e transformar os dados da camada Bronze.
+
+### Etapas principais:
+
+- Remo√ß√£o de valores nulos.
+- Convers√£o de tipos de dados.
+- Enriquecimento e padroniza√ß√£o.
+
+### Resultado esperado:
+
+- Tabelas limpas e estruturadas.
+
+---
+
+## Notebook Gold
+
+### Objetivo:
+Transformar os dados da camada **Silver** em datasets finais na **camada Gold**, prontos para relat√≥rios e an√°lises.
+
+### Etapas principais:
+
+- C√°lculo de KPIs.
+- Agrega√ß√µes e an√°lises.
+- Jun√ß√µes de tabelas.
+- Armazenamento em Delta.
+
+### Resultado esperado:
+
+- Tabelas limpas e estruturadas.
+
+---
+
+## Notebook Gold
+
+### Objetivo:
+Transformar os dados da camada **Silver** em datasets finais na **camada Gold**, prontos para relat√≥rios e an√°lises.
+
+### Etapas principais:
+
+- C√°lculo de KPIs.
+- Agrega√ß√µes e an√°lises.
+- Jun√ß√µes de tabelas.
+- Armazenamento em Delta.
+
+### Resultado esperado:
+
+- Tabelas anal√≠ticas finais para BI.
+
+---
+
+## Autores
+
+- **Luiz Felipe Zomer**
+- **Luiz Filipe Linhares**
+- **Thiago Almeida**
+- **Willian Minatto**
+- **Gabriel Tassi Frello**
+- **Gabriel Boelter**
+
+---
+
+## üîó Refer√™ncias
+
+- [Documenta√ß√£o Azure Databricks](https://learn.microsoft.com/en-us/azure/databricks/)
+- [Delta Lake](https://delta.io/)
+- Exemplo de reposit√≥rio SATC:  
+  [https://github.com/jlsilva01/adls-azure](https://github.com/jlsilva01/adls-azure)
+
+=======
+
 # Pipeline de Dados - Projeto ED SATC
 
 [![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/downloads/)
@@ -6,20 +192,20 @@
 
 Uma pipeline completa de dados usando **Azure Databricks**, **Data Lake Storage** e **Delta Lake** para processamento de dados de jogos.
 
-## ?? DescriÁ„o
+## ü§ñ Descri√ß√£o
 
-Este projeto implementa uma **arquitetura de Data Lakehouse** com trÍs camadas principais:
+Este projeto implementa uma **arquitetura de Data Lakehouse** com tr√™s camadas principais:
 
 - **Landing Zone** - Recebe dados brutos (CSV, JSON)
-- **Bronze** - Dados com metadados b·sicos
+- **Bronze** - Dados com metadados b√°sicos
 - **Silver** - Dados limpos e normalizados
-- **Gold** - Dados prontos para BI e an·lises (One Big Table)
+- **Gold** - Dados prontos para BI e an√°lises (One Big Table)
 
-## ?? Disclaimer
+## ‚ö†Ô∏è Disclaimer
 
-Este projeto È para fins educacionais e de demonstraÁ„o. As credenciais e configuraÁıes do Azure devem ser ajustadas para seu ambiente especÌfico.
+Este projeto √© para fins educacionais e de demonstra√ß√£o. As credenciais e configura√ß√µes do Azure devem ser ajustadas para seu ambiente espec√≠fico.
 
-## ?? PrÈ-requisitos
+## ‚öôÔ∏è Pr√©-requisitos
 
 - **Python 3.9+**
 - **Azure Databricks Workspace**
@@ -27,16 +213,16 @@ Este projeto È para fins educacionais e de demonstraÁ„o. As credenciais e config
 - **PostgreSQL** (para desenvolvimento local)
 - **Docker** (opcional)
 
-### DependÍncias Principais
+### Depend√™ncias Principais
 
 - PySpark 3.5.0+
 - Delta Spark 3.0.0+
 - Azure Storage Blob
 - Azure Identity
 
-## ?? InstalaÁ„o
+## üõ†Ô∏è Instala√ß√£o
 
-### 1. Clone o repositÛrio
+### 1. Clone o reposit√≥rio
 
 ```bash
 git clone https://github.com/username/pipeline-de-dados.git
@@ -52,7 +238,7 @@ source .venv/bin/activate  # Linux/Mac
 .venv\Scripts\activate     # Windows
 ```
 
-### 3. Instale as dependÍncias
+### 3. Instale as depend√™ncias
 
 ```bash
 pip install -r requirements.txt
@@ -60,7 +246,7 @@ pip install -r requirements.txt
 pip install -e ".[dev]"
 ```
 
-### 4. Configure as vari·veis de ambiente
+### 4. Configure as vari√°veis de ambiente
 
 Crie um arquivo `.env` na raiz do projeto:
 
@@ -71,19 +257,19 @@ DATABRICKS_HOST=https://your-workspace.azuredatabricks.net
 DATABRICKS_TOKEN=your_databricks_token
 ```
 
-## ??? Como Usar
+## Como Usar
 
-### ExecuÁ„o Completa da Pipeline
+### Execu√ß√£o Completa da Pipeline
 
 ```bash
 # Executar toda a pipeline
 python -m pipeline_de_dados.main --stage all --verbose
 
-# Ou usando o mÛdulo diretamente
+# Ou usando o m√≥dulo diretamente
 python src/pipeline_de_dados/main.py --stage all
 ```
 
-### ExecuÁ„o por Est·gio
+### Execu√ß√£o por Est√°gio
 
 ```bash
 # Apenas Landing ? Bronze
@@ -95,11 +281,11 @@ python -m pipeline_de_dados.main --stage bronze
 # Apenas Silver ? Gold
 python -m pipeline_de_dados.main --stage silver
 
-# Apenas criaÁ„o da One Big Table
+# Apenas cria√ß√£o da One Big Table
 python -m pipeline_de_dados.main --stage gold
 ```
 
-### ExecuÁ„o no Databricks
+### Execu√ß√£o no Databricks
 
 ```python
 # No notebook do Databricks
@@ -108,7 +294,7 @@ python -m pipeline_de_dados.main --stage gold
 %run "./src/pipeline_de_dados/silver_to_gold"
 ```
 
-## ?? Testes
+## Testes
 
 ### Executar todos os testes
 
@@ -130,33 +316,33 @@ black --check src/ tests/
 mypy src/
 ```
 
-## ?? DocumentaÁ„o
+## Documenta√ß√£o
 
-A documentaÁ„o completa est· disponÌvel em:
+A documenta√ß√£o completa est√° dispon√≠vel em:
 
-- **?? [DocumentaÁ„o Online](https://username.github.io/pipeline-de-dados)**
-- **?? [docs/](docs/)** - DocumentaÁ„o local
+- **?? [Documenta√ß√£o Online](https://username.github.io/pipeline-de-dados)**
+- **?? [docs/](docs/)** - Documenta√ß√£o local
 
-### Estrutura da DocumentaÁ„o
+### Estrutura da Documenta√ß√£o
 
 - `docs/arquitetura.md` - Arquitetura geral do sistema
 - `docs/camadas.md` - Detalhes das camadas de dados
-- `docs/index.md` - P·gina inicial da documentaÁ„o
+- `docs/index.md` - P√°gina inicial da documenta√ß√£o
 
-## ?? Estrutura do Projeto
+## Estrutura do Projeto
 
 ```
 pipeline-de-dados/
 ??? README.md                 # Este arquivo
-??? LICENSE                   # LicenÁa MIT
-??? .python-version          # Vers„o do Python (pyenv)
+??? LICENSE                   # Licen√ßa MIT
+??? .python-version          # Vers√£o do Python (pyenv)
 ??? .gitignore              # Arquivos ignorados pelo Git
-??? pyproject.toml          # ConfiguraÁ„o do projeto
-??? requirements.txt        # DependÍncias
-??? docker-compose.yml      # ConfiguraÁ„o Docker
-??? mkdocs.yml             # ConfiguraÁ„o da documentaÁ„o
+??? pyproject.toml          # Configura√ß√£o do projeto
+??? requirements.txt        # Depend√™ncias
+??? docker-compose.yml      # Configura√ß√£o Docker
+??? mkdocs.yml             # Configura√ß√£o da documenta√ß√£o
 ?
-??? src/                   # CÛdigo fonte
+??? src/                   # C√≥digo fonte
 ?   ??? pipeline_de_dados/
 ?       ??? __init__.py
 ?       ??? main.py        # Ponto de entrada
@@ -169,7 +355,7 @@ pipeline-de-dados/
 ?   ??? __init__.py
 ?   ??? test_pipeline.py
 ?
-??? docs/                  # DocumentaÁ„o
+??? docs/                  # Documenta√ß√£o
 ?   ??? index.md
 ?   ??? arquitetura.md
 ?   ??? camadas.md
@@ -184,9 +370,9 @@ pipeline-de-dados/
 ?   ??? raw/              # Dados brutos
 ?   ??? processed/        # Dados processados
 ?
-??? logs/                  # Logs da aplicaÁ„o
+??? logs/                  # Logs da aplica√ß√£o
 ??? assets/               # Imagens, diagramas
-??? iac/                  # Infraestrutura como cÛdigo
+??? iac/                  # Infraestrutura como c√≥digo
 ?   ??? main.tf
 ?   ??? variables.tf
 ?   ??? (recursos Azure)
@@ -196,21 +382,21 @@ pipeline-de-dados/
         ??? ci.yml
 ```
 
-## ?? ConfiguraÁ„o
+## Configura√ß√£o
 
 ### Azure Databricks
 
 1. Configure o workspace do Databricks
 2. Monte os containers do Data Lake Storage
-3. Configure as permissıes necess·rias
+3. Configure as permiss√µes necess√°rias
 
 ### Data Lake Storage
 
 1. Crie os containers: `landing`, `bronze`, `silver`, `gold`
-2. Configure as polÌticas de acesso
-3. Gere o SAS Token com permissıes adequadas
+2. Configure as pol√≠ticas de acesso
+3. Gere o SAS Token com permiss√µes adequadas
 
-## ?? Deploy
+## Deploy
 
 ### Local
 
@@ -224,7 +410,7 @@ python -m pipeline_de_dados.main
 
 ### Databricks
 
-1. FaÁa upload dos notebooks para o workspace
+1. Fa√ßa upload dos notebooks para o workspace
 2. Configure os clusters
 3. Execute os notebooks na ordem correta
 
@@ -232,34 +418,9 @@ python -m pipeline_de_dados.main
 
 O projeto inclui GitHub Actions para:
 - ? Testes automatizados
-- ? Linting e formataÁ„o
+- ? Linting e formata√ß√£o
 - ? Build do pacote
-- ? Deploy da documentaÁ„o
-
-## ?? ContribuiÁ„o
-
-1. Fork o projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
-3. Commit suas mudanÁas (`git commit -m 'Add some AmazingFeature'`)
-4. Push para a branch (`git push origin feature/AmazingFeature`)
-5. Abra um Pull Request
-
-## ?? LicenÁa
-
-Este projeto est· licenciado sob a LicenÁa MIT - veja o arquivo [LICENSE](LICENSE) para detalhes.
-
-## ????? Autor
-
-**Thiago Almeida**
-- Email: thiago.almeida@example.com
-- GitHub: [@username](https://github.com/username)
-
-## ?? Agradecimentos
-
-- **SATC** - InstituiÁ„o de ensino
-- **Azure** - Plataforma cloud
-- **Databricks** - Plataforma de dados
+- ? Deploy da documenta√ß√£o
 
 ---
 
-? Se este projeto foi ˙til, considere dar uma estrela!

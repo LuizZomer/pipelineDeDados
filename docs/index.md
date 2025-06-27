@@ -1,16 +1,18 @@
-v# Pipeline de Dados com PySpark, Delta Lake e Azure
+# Pipeline de Dados com PySpark, Delta Lake e Azure
 
-Este projeto apresenta uma arquitetura de pipeline de dados moderna baseada em **Azure**, utilizando **PySpark** com **Delta Lake**. A proposta é construir uma solução robusta com camadas Landing, Silver e Gold para um fluxo de dados limpo, confiável e auditável.
+Este projeto é um exemplo prático de **Engenharia de Dados**, construído durante o curso na SATC.
 
-Este material é parte da disciplina de **Engenharia de Dados**.
+## 🔎 Objetivo:
 
----
+Demonstrar um pipeline de ingestão e processamento de dados usando:
 
-## Objetivos
+- **Azure Data Lake Storage Gen2 (ADLS)**
+- **PySpark**
+- **Delta Lake**
+- **Databricks**
 
-- Coletar e armazenar dados brutos (Landing Zone)
-- Transformar e limpar dados (Silver)
-- Agregar e disponibilizar dados para BI (Gold)
-- Utilizar Spark com Delta Lake e armazenamento em Azure
+## 🚀 Fluxo do Pipeline:
 
----
+1. **Landing → Bronze:** Ingestão de dados brutos para Delta Lake
+2. **Bronze → Silver:** Limpeza, padronização e enriquecimento
+3. **Silver → Gold:** Agregações e criação de indicadores para análise
