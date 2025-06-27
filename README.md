@@ -38,6 +38,7 @@ O pipeline é responsável por realizar a ingestão, tratamento, enriquecimento 
 - [Docker](https://www.docker.com/)
 - [SQL Server (Docker)](https://hub.docker.com/_/microsoft-mssql-server)
 - [Python](https://www.python.org/)
+- [Node.js](https://nodejs.org/)
 
 ---
 
