@@ -1,16 +1,20 @@
 import prisma from "../client.js";
 import { faker } from "@faker-js/faker/locale/pt_BR";
 
-export const generateGamePlatform = async (platformCount, gameCount) => {
+export const generateGamePlatform = async (gameIds) => {
   console.log("Generating gamePlataform...");
 
-  const desiredAmount = 1000;
+  const platformIds = (
+    await prisma.platform.findMany({ select: { id: true } })
+  ).map((p) => p.id);
+
+  const desiredAmount = 50;
   const pairs = new Set();
   const data = [];
 
   while (data.length < desiredAmount) {
-    const gameId = faker.number.int({ min: 1, max: gameCount });
-    const platformId = faker.number.int({ min: 1, max: platformCount });
+    const gameId = faker.helpers.arrayElement(gameIds);
+    const platformId = faker.helpers.arrayElement(platformIds);
     const key = `${gameId}-${platformId}`;
 
     if (!pairs.has(key)) {

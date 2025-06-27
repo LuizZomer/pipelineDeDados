@@ -14,6 +14,7 @@ model User {
   name         String
   email        String                @unique
   password     String
+  createdAt    DateTime              @default(now()) // Adicionado
   reviews      Review[]
   purchases    Purchase[]
   achievements UnlockedAchievement[]
@@ -42,44 +43,49 @@ model Game {
 }
 
 model Developer {
-  id      Int     @id @default(autoincrement())
-  name    String
-  country String?
-  games   Game[]
+  id        Int       @id @default(autoincrement())
+  name      String
+  country   String?
+  foundedAt DateTime? // Adicionado
+  games     Game[]
 
   @@map("developers")
 }
 
 model Platform {
-  id    Int            @id @default(autoincrement())
-  name  String
-  games GamePlatform[]
+  id        Int            @id @default(autoincrement())
+  name      String
+  createdAt DateTime? // Adicionado
+  games     GamePlatform[]
 
   @@map("platforms")
 }
 
 model Gender {
-  id    Int          @id @default(autoincrement())
-  name  String
-  games GameGender[]
+  id        Int          @id @default(autoincrement())
+  name      String
+  createdAt DateTime?
+  games     GameGender[]
 
   @@map("genders")
 }
 
 model Tag {
-  id    Int       @id @default(autoincrement())
-  name  String
-  games GameTag[]
+  id        Int       @id @default(autoincrement())
+  name      String
+  createdAt DateTime? // Adicionado
+  games     GameTag[]
 
   @@map("tags")
 }
 
 model Review {
-  id      Int     @id @default(autoincrement())
-  rating  Int
-  comment String?
-  userId  Int
-  gameId  Int
+  id        Int      @id @default(autoincrement())
+  rating    Int
+  comment   String?
+  createdAt DateTime @default(now()) // Adicionado
+  userId    Int
+  gameId    Int
 
   user User @relation(fields: [userId], references: [id])
   game Game @relation(fields: [gameId], references: [id])
@@ -101,10 +107,11 @@ model Purchase {
 }
 
 model Achievement {
-  id          Int     @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   name        String
   description String?
   points      Int
+  createdAt   DateTime @default(now()) // Adicionado
   gameId      Int
 
   unlockedAchievements UnlockedAchievement[]

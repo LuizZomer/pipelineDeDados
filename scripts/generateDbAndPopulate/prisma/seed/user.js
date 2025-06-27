@@ -8,6 +8,7 @@ export const user = async (userCount) => {
       name: faker.person.fullName(),
       email: `user${i}_${faker.internet.email()}`,
       password: faker.internet.password(),
+      createdAt: faker.date.between({ from: "2020-01-01", to: "2024-01-01" }),
     })),
   });
 };
