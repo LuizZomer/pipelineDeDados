@@ -1,25 +1,25 @@
 -- =====================================================
--- DASHBOARD DE ANÃLISES DE JOGOS - ONE BIG TABLE
+-- DASHBOARD DE ANÁLISES DE JOGOS - ONE BIG TABLE
 -- Pipeline de Dados - ED SATC
 -- Tabela: pipeline_gold.obt_games_master
 -- =====================================================
 
 -- =====================================================
--- GRÃFICO 1: DISTRIBUIÃ‡ÃƒO DE JOGOS POR CATEGORIA DE VENDAS
--- Tipo: GrÃ¡fico de Barras/Pizza
+-- GRÁFICO 1: DISTRIBUIÇÃO DE JOGOS POR CATEGORIA DE VENDAS
+-- Tipo: Gráfico de Barras/Pizza
 -- =====================================================
 SELECT 
     sales_category,
     COUNT(*) as total_jogos,
-    ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER (), 2) as percentual
+    ROUND(COUNT() * 100.0 / SUM(COUNT()) OVER (), 2) as percentual
 FROM pipeline_gold.obt_games_master
 WHERE sales_category IS NOT NULL
 GROUP BY sales_category
 ORDER BY total_jogos DESC;
 
 -- =====================================================
--- GRÃFICO 2: TOP 10 JOGOS POR VENDAS
--- Tipo: GrÃ¡fico de Barras Horizontais
+-- GRÁFICO 2: TOP 10 JOGOS POR VENDAS
+-- Tipo: Gráfico de Barras Horizontais
 -- =====================================================
 SELECT 
     game_title,
@@ -33,8 +33,8 @@ ORDER BY total_purchases DESC
 LIMIT 10;
 
 -- =====================================================
--- GRÃFICO 3: CORRELAÃ‡ÃƒO ENTRE PREÃ‡O E AVALIAÃ‡ÃƒO
--- Tipo: GrÃ¡fico de DispersÃ£o (Scatter Plot)
+-- GRÁFICO 3: CORRELAÇÃO ENTRE PREÇO E AVALIAÇÃO
+-- Tipo: Gráfico de Dispersão (Scatter Plot)
 -- =====================================================
 SELECT 
     price_category,
@@ -48,8 +48,8 @@ GROUP BY price_category
 ORDER BY preco_medio;
 
 -- =====================================================
--- GRÃFICO 4: PERFORMANCE DOS DESENVOLVEDORES
--- Tipo: GrÃ¡fico de Barras Agrupadas
+-- GRÁFICO 4: PERFORMANCE DOS DESENVOLVEDORES
+-- Tipo: Gráfico de Barras Agrupadas
 -- =====================================================
 SELECT 
     developer_name,
@@ -67,8 +67,8 @@ ORDER BY receita_total DESC
 LIMIT 15;
 
 -- =====================================================
--- GRÃFICO 5: MÃ‰TRICAS DE ENGAGAMENTO E CONVERSÃƒO
--- Tipo: GrÃ¡fico de Indicadores (KPIs) + GrÃ¡fico de Linhas
+-- GRÁFICO 5: MÉTRICAS DE ENGAGAMENTO E CONVERSÃO
+-- Tipo: Gráfico de Indicadores (KPIs) + Gráfico de Linhas
 -- =====================================================
 SELECT 
     rating_category,
@@ -107,7 +107,7 @@ FROM pipeline_gold.obt_games_master
 ORDER BY popularity_score DESC
 LIMIT 5;
 
--- KPI 3: AnÃ¡lise de Qualidade dos Dados
+-- KPI 3: Análise de Qualidade dos Dados
 SELECT 
     ROUND(AVG(data_quality_score), 2) as qualidade_dados_media,
     COUNT(CASE WHEN data_quality_score = 5 THEN 1 END) as jogos_completos,
@@ -115,7 +115,7 @@ SELECT
 FROM pipeline_gold.obt_games_master;
 
 -- =====================================================
--- CONSULTAS PARA FILTROS DINÃ‚MICOS
+-- CONSULTAS PARA FILTROS DINÂMICOS
 -- =====================================================
 
 -- Lista de Desenvolvedores para Filtro
@@ -128,7 +128,7 @@ WHERE developer_name != 'Unknown'
 GROUP BY developer_name
 ORDER BY total_jogos DESC;
 
--- Lista de Categorias de PreÃ§o para Filtro
+-- Lista de Categorias de Preço para Filtro
 SELECT DISTINCT 
     price_category,
     COUNT(*) as total_jogos
@@ -137,11 +137,11 @@ WHERE price_category IS NOT NULL
 GROUP BY price_category
 ORDER BY total_jogos DESC;
 
--- Lista de Categorias de AvaliaÃ§Ã£o para Filtro
+-- Lista de Categorias de Avaliação para Filtro
 SELECT DISTINCT 
     rating_category,
     COUNT(*) as total_jogos
 FROM pipeline_gold.obt_games_master
 WHERE rating_category IS NOT NULL
 GROUP BY rating_category
-ORDER BY total_jogos DESC; 
+ORDER BY total_jogos DESC;
