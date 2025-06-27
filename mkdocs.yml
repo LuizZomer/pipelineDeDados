@@ -1,6 +1,6 @@
 site_name: Engenharia de Dados SATC
 site_description: Documentação do projeto Pipeline de Dados com PySpark, Delta Lake e Azure
-site_author: Prof. Nome do Responsável ou Grupo SATC
+site_author: Professor Jorge Luiz Da Silva
 
 repo_name: projeto-ed-satc
 repo_url: https://github.com/LuizZomer/pipelineDeDados.git

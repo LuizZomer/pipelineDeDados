@@ -333,53 +333,84 @@ A documentação completa está disponível em:
 
 ```
 pipeline-de-dados/
-??? README.md                 # Este arquivo
-??? LICENSE                   # Licença MIT
-??? .python-version          # Versão do Python (pyenv)
-??? .gitignore              # Arquivos ignorados pelo Git
-??? pyproject.toml          # Configuração do projeto
-??? requirements.txt        # Dependências
-??? docker-compose.yml      # Configuração Docker
-??? mkdocs.yml             # Configuração da documentação
-?
-??? src/                   # Código fonte
-?   ??? pipeline_de_dados/
-?       ??? __init__.py
-?       ??? main.py        # Ponto de entrada
-?       ??? pipeline_completa/
-?           ??? landing_to_bronze.ipynb
-?           ??? bronze_to_silver.ipynb
-?           ??? silver_to_gold.ipynb
-?
-??? tests/                 # Testes
-?   ??? __init__.py
-?   ??? test_pipeline.py
-?
-??? docs/                  # Documentação
-?   ??? index.md
-?   ??? arquitetura.md
-?   ??? camadas.md
-?
-??? examples/              # Exemplos de uso
-?   ??? basic_usage.py
-?
-??? scripts/               # Scripts auxiliares
-?   ??? generateDbAndPopulate/
-?
-??? data/                  # Dados
-?   ??? raw/              # Dados brutos
-?   ??? processed/        # Dados processados
-?
-??? logs/                  # Logs da aplicação
-??? assets/               # Imagens, diagramas
-??? iac/                  # Infraestrutura como código
-?   ??? main.tf
-?   ??? variables.tf
-?   ??? (recursos Azure)
-?
-??? .github/              # GitHub Actions
-    ??? workflows/
-        ??? ci.yml
+├── 📄 README.md                    # Este arquivo
+├── 📄 LICENSE                      # Licença MIT
+├── 📄 .python-version             # Versão Python (pyenv)
+├── 📄 .gitignore                  # Arquivos ignorados
+├── 📄 pyproject.toml              # Configuração do projeto
+├── 📄 setup.py                    # Instalação do pacote
+├── 📄 requirements.txt            # Dependências produção
+├── 📄 requirements-dev.txt        # Dependências desenvolvimento
+├── 📄 docker-compose.yml          # Configuração Docker
+├── 📄 mkdocs.yml                  # Configuração documentação
+├── 📄 Makefile                    # Automação de tarefas
+├── 📄 .pre-commit-config.yaml     # Hooks pre-commit
+├── 📄 env.example                 # Template variáveis ambiente
+│
+├── 📁 .vscode/                    # Configurações VS Code
+│   ├── settings.json
+│   └── extensions.json
+│
+├── 📁 .github/                    # GitHub Actions
+│   └── workflows/
+│       └── ci.yml                 # Pipeline CI/CD
+│
+├── 📁 src/                        # 🐍 Código fonte
+│   └── pipeline_de_dados/
+│       ├── __init__.py
+│       ├── main.py                # Ponto de entrada
+│       ├── sql_to_landing-zone.ipynb
+│       ├── landing_to_bronze.ipynb
+│       ├── bronze_to_silver.ipynb
+│       ├── silver_to_gold.ipynb
+│       └── gold_to_dashboard.ipynb
+│
+├── 📁 tests/                      # 🧪 Testes
+│   ├── __init__.py
+│   └── test_pipeline.py
+│
+├── 📁 docs/                       # 📚 Documentação
+│   ├── index.md
+│   ├── arquitetura.md
+│   ├── camadas.md
+│   ├── landing_to_bronze.md
+│   ├── bronze_to_silver.md
+│   ├── silver_to_gold.md
+│   └── sobre.md
+│
+├── 📁 examples/                   # 💡 Exemplos de uso
+│   ├── README.md
+│   └── basic_usage.py
+│
+├── 📁 scripts/                    # 🔧 Scripts auxiliares
+│   └── generateDbAndPopulate/
+│       ├── prisma/
+│       ├── migrations/
+│       ├── seed/
+│       ├── package.json
+│       └── README.md
+│
+├── 📁 data/                       # 💾 Dados
+│   ├── README.md
+│   ├── raw/                       # Dados brutos
+│   └── processed/                 # Dados processados
+│
+├── 📁 logs/                       # 📋 Logs da aplicação
+│   └── README.md
+│
+├── 📁 assets/                     # 🖼️ Recursos visuais
+│   └── README.md
+│
+├── 📁 iac/                        # 🏗️ Infrastructure as Code
+│   ├── main.tf
+│   ├── variables.tf
+│   ├── outputs.tf
+│   ├── provider.tf
+│   ├── adls-azure/
+│   ├── databricks_workspace/
+│   └── sql_server/
+│
+└── 📄 dashboard_queries.sql       # Queries para dashboard
 ```
 
 ## Configuração
